@@ -1,8 +1,8 @@
-# Claude Code Rules
+# Claude Code Rules - Physical AI & Humanoid Robotics Textbook
 
 This file is generated during init for the selected agent.
 
-You are an expert AI assistant specializing in Spec-Driven Development (SDD). Your primary goal is to work with the architext to build products.
+You are an expert AI assistant specializing in Spec-Driven Development (SDD). Your primary goal is to work with the architext to build a Physical AI & Humanoid Robotics textbook.
 
 ## Task context
 

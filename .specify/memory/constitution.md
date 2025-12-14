@@ -1,55 +1,51 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Physical AI & Humanoid Robotics Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Physical AI First
+Every feature and concept must connect AI systems to the physical world. All implementations must demonstrate how digital intelligence translates to physical action. Clear understanding of embodied intelligence required - no purely theoretical AI concepts without physical application context.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. ROS 2 Integration (NON-NEGOTIABLE)
+All robotic control concepts must utilize ROS 2 (Robot Operating System) as the foundational middleware. Every component concept must be designed as a ROS 2 node with proper topics, services, and actions. Implementation must follow rclpy patterns for Python integration.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Simulation-to-Reality (Sim2Real)
+All robotics development starts in simulation environments (Gazebo, Unity, Isaac Sim) before real-world deployment. Every concept must be demonstrable in simulation first, with clear path to physical implementation. Content must support both cloud and local deployment scenarios. Synthetic data generation and photorealistic simulation required for training.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Multi-Platform Compatibility
+Support NVIDIA Isaac platform, Gazebo physics simulation, and Unity visualization environments. Content must be designed for cross-platform deployment between simulation and real hardware. Standardized interfaces required for platform migration. Content must be adaptable to different hardware configurations (cloud vs. local workstations).
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Vision-Language-Action Integration
+Focus on convergence of LLMs, computer vision, and robotic action. Natural language ("Clean the room") must translate to ROS 2 action sequences. Voice-to-action capabilities using OpenAI Whisper integration required for capstone projects. Multi-modal interaction: speech, gesture, vision integration essential.
 
-### [PRINCIPLE_6_NAME]
+### VI. Humanoid-Centric Design
+All robot design and control systems must prioritize humanoid form factors and human-centered environments. Bipedal locomotion, balance control, and natural human-robot interaction must be fundamental to all implementations.
 
+### VII. Conversational AI Integration
+Content must integrate GPT models for conversational AI in robots. Speech recognition and natural language understanding must be taught as core components. Multi-modal interaction combining speech, gesture, and vision required for comprehensive human-robot interaction.
 
-[PRINCIPLE__DESCRIPTION]
+### VIII. Hardware-Aware Content Delivery
+Content must acknowledge computational demands of Physics Simulation, Visual Perception, and Generative AI simultaneously. Material must be structured for different hardware configurations: high-performance workstations with RTX GPUs for local development vs. cloud-based instances. Content must support both simulation and real-world deployment with clear pathways between them.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Additional Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+Content requirements: All chapters must include practical examples using ROS 2, Python, NVIDIA Isaac SDK, Gazebo, Unity, OpenAI Whisper, and LLMs
+Educational standards: Follow ROS 2 best practices and safety protocols for humanoid robots
+Pedagogical approach: Simulated examples required before real-world application concepts
+Hardware considerations: Content must address RTX-enabled workstations vs. cloud-based delivery with different performance characteristics
+Deployment scenarios: Content must support both local (Ubuntu 22.04) and cloud (AWS/Azure) environments
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+Content review requirements must verify: Physical AI integration, ROS 2 compliance, Simulation examples, Humanoid applicability
+Educational gates: All content must demonstrate functionality in simulation before advancing to real-world concepts
+Quality standards: Natural human-robot interaction capabilities required for all capstone concepts
+Hardware awareness: Content must address computational demands and different deployment scenarios
+Assessment alignment: Content must support ROS 2 package development, Gazebo simulation, Isaac pipeline, and capstone humanoid robot projects
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other practices for the Physical AI & Humanoid Robotics textbook project. All content must demonstrate connection between digital AI and physical robot control. Amendments require documentation of impact on Physical AI principles and embodied intelligence focus.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+All PRs/reviews must verify compliance with Physical AI principles; Complexity must be justified by real-world robot application; Use CLAUDE.md for runtime development guidance.
+
+**Version**: 1.2.0 | **Ratified**: 2025-12-14 | **Last Amended**: 2025-12-14
