@@ -1,4 +1,4 @@
-# Claude Code Rules - Physical AI & Humanoid Robotics Textbook
+﻿# Claude Code Rules - Physical AI & Humanoid Robotics Textbook
 
 This file is generated during init for the selected agent.
 
