@@ -1,6 +1,14 @@
-# Website
+# Physical AI & Humanoid Robotics Textbook - Website
 
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+
+This repository contains the Physical AI & Humanoid Robotics textbook, with content organized into modules:
+
+- **Module 1**: Robotic Nervous System (ROS 2)
+- **Module 2**: Digital Twin (Gazebo & Unity) - *Newly added*
+- **Module 3**: AI-Robot Brain (NVIDIA Isaac™)
+- **Module 4**: Vision-Language-Action (VLA)
+- **Module 5**: Capstone: Autonomous Humanoid
 
 ## Installation
 

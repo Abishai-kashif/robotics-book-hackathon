@@ -1,7 +1,7 @@
 ---
-title: Unity Visualization and Humanoid Animation
+title: Chapter 3 - Unity Visualization and Humanoid Animation
 description: Creating realistic humanoid robot visualization and animation in Unity with ROS 2 integration
-sidebar_position: 8
+sidebar_position: 5
 ---
 
 # Chapter 3: Unity Visualization and Humanoid Animation
@@ -78,6 +78,7 @@ Unity's Mecanim system provides powerful tools for humanoid animation:
 ### Custom Animation Controllers
 
 For robotics-specific animations:
+
 - **Locomotion States**: Walking, running, and standing animations
 - **Manipulation Animations**: Grasping, reaching, and object manipulation
 - **Expressive Animations**: Facial expressions and gesture animations

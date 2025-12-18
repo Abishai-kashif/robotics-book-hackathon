@@ -1,10 +1,10 @@
 ---
-title: Advanced Gazebo Simulation for Humanoid Robots
+title: Chapter 2 - Advanced Gazebo Simulation for Humanoid Robots
 description: Deep dive into Gazebo simulation environment setup, physics modeling, and sensor simulation for humanoid robots
-sidebar_position: 7
+sidebar_position: 4
 ---
 
-# Chapter 1: Advanced Gazebo Simulation for Humanoid Robots
+# Chapter 2: Advanced Gazebo Simulation for Humanoid Robots
 
 ## Learning Objectives
 
