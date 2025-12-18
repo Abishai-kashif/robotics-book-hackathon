@@ -1,7 +1,7 @@
 ---
-title: Introduction to Digital Twins and Simulation Platforms
+title: Chapter 1 - Introduction to Digital Twins and Simulation Platforms
 description: Understanding digital twin concepts and comparing Gazebo and Unity simulation platforms for humanoid robotics
-sidebar_position: 9
+sidebar_position: 3
 ---
 
 # Chapter 1: Introduction to Digital Twins and Simulation Platforms
