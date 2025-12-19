@@ -52,41 +52,45 @@ const sidebars = {
       label: 'Module 3: AI-Robot Brain (NVIDIA Isaac™)',
       items: [
         'nvidia-isaac-platform',
-        'photorealistic-simulation',
-        'vslam-navigation',
-        'nav2-path-planning',
+        'isaac-ai-workflows',
+        'robot-brain-integration',
+        'isaac-simulation-environments',
+        'ros2-isaac-integration',
+        'deployment-scenarios',
       ],
     },
     {
       type: 'category',
       label: 'Module 4: Vision-Language-Action (VLA)',
       items: [
-        'voice-to-action',
-        'llm-cognitive-planning',
-        'conversational-robotics',
-        'multi-modal-interaction',
+        'introduction-to-vla-systems',
+        'vision-language-models',
+        'action-planning',
+        'multimodal-interaction',
+        'vla-simulation-examples',
+        'vla-ros-integration',
       ],
     },
-    {
-      type: 'category',
-      label: 'Capstone: Autonomous Humanoid',
-      items: [
-        'capstone-overview',
-        'simulated-robot-control',
-        'path-planning-obstacle-navigation',
-        'object-identification-manipulation',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Hardware & Deployment',
-      items: [
-        'hardware-requirements',
-        'workstation-setup',
-        'edge-computing-kits',
-        'deployment-scenarios',
-      ],
-    },
+    // {
+    //   type: 'category',
+    //   label: 'Capstone: Autonomous Humanoid',
+    //   items: [
+    //     'capstone-overview',
+    //     'simulated-robot-control',
+    //     'path-planning-obstacle-navigation',
+    //     'object-identification-manipulation',
+    //   ],
+    // },
+    // {
+    //   type: 'category',
+    //   label: 'Hardware & Deployment',
+    //   items: [
+    //     'hardware-requirements',
+    //     'workstation-setup',
+    //     'edge-computing-kits',
+    //     'deployment-scenarios',
+    //   ],
+    // },
   ],
 };
 
