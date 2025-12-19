@@ -79,6 +79,16 @@ const config = {
     ({
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
+      metadata: [
+        {name: 'keywords', content: 'robotics, AI, humanoid robotics, physical AI, textbook, education, computer science, artificial intelligence, machine learning'},
+        {name: 'author', content: 'Physical AI & Humanoid Robotics Textbook'},
+        {name: 'og:type', content: 'website'},
+        {name: 'og:site_name', content: 'Physical AI & Humanoid Robotics'},
+        {name: 'og:description', content: 'Comprehensive textbook on Physical AI and Humanoid Robotics, bridging the gap between digital AI and physical robots'},
+        {name: 'twitter:card', content: 'summary_large_image'},
+        {name: 'twitter:site', content: '@textbook'},
+        {name: 'twitter:creator', content: '@textbook'},
+      ],
       colorMode: {
         respectPrefersColorScheme: true,
       },

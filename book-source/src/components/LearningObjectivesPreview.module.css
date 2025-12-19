@@ -1,0 +1,52 @@
+.learningObjectivesPreview {
+  padding: 3rem 0;
+  background-color: #fff;
+}
+
+.learningObjectivesPreview h2 {
+  text-align: center;
+  color: #2d3748;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.learningObjectivesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.learningObjectiveItem {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.learningObjectiveItem:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.learningObjectiveContent {
+  color: #2d3748;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.learningObjectiveContent::before {
+  content: "🎓";
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .learningObjectivesGrid {
+    grid-template-columns: 1fr;
+  }
+}

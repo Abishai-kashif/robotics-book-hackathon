@@ -6,25 +6,44 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-color-primary: #1a365d; /* Primary blue from book header */
+  --ifm-color-primary-dark: #152a4a;
+  --ifm-color-primary-darker: #122440;
+  --ifm-color-primary-darkest: #0d1a2e;
+  --ifm-color-primary-light: #2c5282;
+  --ifm-color-primary-lighter: #3182ce;
+  --ifm-color-primary-lightest: #63b3ed;
+  --ifm-color-secondary: #2d3748; /* Secondary blue-gray */
+  --ifm-color-success: #38a169; /* Green for success (keep as is) */
+  --ifm-color-info: #3182ce; /* Blue for info */
+  --ifm-color-warning: #d69e2e; /* Amber for warning */
+  --ifm-color-danger: #e53e3e; /* Red for danger */
+  --ifm-navbar-link-color: #2d3748;
+  --ifm-navbar-link-hover-color: #1a365d;
+  --ifm-menu-color: #2d3748;
+  --ifm-menu-color-active: #1a365d;
+  --ifm-menu-link-padding-horizontal: 0.75rem;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: #63b3ed;
+  --ifm-color-primary-dark: #4299e1;
+  --ifm-color-primary-darker: #3182ce;
+  --ifm-color-primary-darkest: #2c5282;
+  --ifm-color-primary-light: #90cdf4;
+  --ifm-color-primary-lighter: #bee3f8;
+  --ifm-color-primary-lightest: #ebf8ff;
+  --ifm-color-secondary: #a0aec0;
+  --ifm-color-success: #68d391;
+  --ifm-color-info: #63b3ed;
+  --ifm-color-warning: #f6e05e;
+  --ifm-color-danger: #fc8181;
+  --ifm-navbar-link-color: #e2e8f0;
+  --ifm-navbar-link-hover-color: #63b3ed;
+  --ifm-menu-color: #e2e8f0;
+  --ifm-menu-color-active: #63b3ed;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
