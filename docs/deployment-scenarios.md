@@ -1,5 +1,5 @@
 ---
-title: "Deployment Scenarios: Cloud vs. Local with Isaac"
+title: Deployment Scenarios: Cloud vs. Local with Isaac
 description: Different deployment scenarios for Isaac-based robotic systems comparing cloud and local options
 sidebar_position: 6
 ---
