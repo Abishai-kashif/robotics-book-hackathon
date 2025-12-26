@@ -1,0 +1,172 @@
+openapi: 3.0.0
+info:
+  title: Docusaurus Chatbot API
+  description: API for conversational chatbot integration with textbook content using RAG
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Development server
+paths:
+  /chat:
+    post:
+      summary: Process a user query and return a RAG-enhanced response
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserQuery'
+      responses:
+        '200':
+          description: Successful response with answer and sources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RAGResponse'
+        '400':
+          description: Invalid query format
+        '500':
+          description: Internal server error
+  /health:
+    get:
+      summary: Check the health status of the service
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+  /embeddings:
+    post:
+      summary: Process and store new content embeddings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextbookContent'
+      responses:
+        '201':
+          description: Embeddings created successfully
+        '400':
+          description: Invalid content format
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    UserQuery:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          description: The user's natural language question
+          example: "Explain how humanoid robots maintain balance"
+        context:
+          type: object
+          description: Additional context like current page
+          properties:
+            current_page:
+              type: string
+              example: "/module4/chapter2"
+        session_id:
+          type: string
+          description: Optional session identifier for conversation history
+          example: "sess_12345"
+    RAGResponse:
+      type: object
+      required:
+        - response_id
+        - answer
+        - sources
+        - confidence_score
+      properties:
+        response_id:
+          type: string
+          description: Unique identifier for this response
+          example: "resp_67890"
+        answer:
+          type: string
+          description: The generated answer to the user's query
+          example: "Humanoid robots maintain balance through a combination of..."
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceCitation'
+        confidence_score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Confidence level of the response
+          example: 0.85
+        timestamp:
+          type: string
+          format: date-time
+          description: When the response was generated
+    SourceCitation:
+      type: object
+      required:
+        - content_id
+        - text_snippet
+        - source_path
+      properties:
+        content_id:
+          type: string
+          description: Identifier of the source content
+          example: "content_123"
+        text_snippet:
+          type: string
+          description: Relevant excerpt from the source
+          example: "Balance control in humanoid robots involves..."
+        source_path:
+          type: string
+          description: Path to the original content
+          example: "/module4/chapter2.md"
+        page_reference:
+          type: string
+          description: Page number or section reference
+          example: "Chapter 4.2"
+    TextbookContent:
+      type: object
+      required:
+        - content_id
+        - title
+        - body
+        - source_path
+      properties:
+        content_id:
+          type: string
+          description: Unique identifier for the content chunk
+          example: "content_123"
+        title:
+          type: string
+          description: Title of the content section
+          example: "Balance Control in Humanoid Robots"
+        body:
+          type: string
+          description: The actual text content
+          example: "Humanoid robots maintain balance through a combination of..."
+        source_path:
+          type: string
+          description: Path to the original content in the textbook
+          example: "/module4/chapter2.md"
+        metadata:
+          type: object
+          description: Additional information about the content
+          properties:
+            module:
+              type: string
+              example: "Module 4"
+            chapter:
+              type: string
+              example: "Chapter 2"
