@@ -24,13 +24,14 @@
   z-index: 10;
 }
 
-.heroContent .hero__title {
-  font-size: 3rem;
+.hero__title {
+  font-size: 4rem;
   margin-bottom: 1.5rem;
-  line-height: 1.2;
+  line-height: 1.05;
+  font-weight: bolder;
 }
 
-.heroContent .hero__subtitle {
+.hero__subtitle {
   font-size: 1.5rem;
   margin-bottom: 2rem;
   opacity: 0.9;
@@ -48,7 +49,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
+  gap: 1.5rem;
   margin-top: 2rem;
 }
 
@@ -68,11 +69,11 @@
     text-align: center;
   }
 
-  .heroContent .hero__title {
+  .hero__title {
     font-size: 2.5rem;
   }
 
-  .heroContent .hero__subtitle {
+  .hero__subtitle {
     font-size: 1.25rem;
   }
 
@@ -91,11 +92,11 @@
     padding: 2rem 0;
   }
 
-  .heroContent .hero__title {
+  .hero__title {
     font-size: 2rem;
   }
 
-  .heroContent .hero__subtitle {
+  .hero__subtitle {
     font-size: 1.1rem;
   }
 
