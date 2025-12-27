@@ -3,6 +3,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import RobotCharacter3D from '@site/src/components/RobotCharacter3D';
 
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
@@ -11,17 +12,22 @@ function HomepageHeader() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
-        </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Start Learning
-          </Link>
+      <div className={clsx('container', styles.heroContainer)}>
+        <div className={styles.heroContent}>
+          <Heading as="h1" className="hero__title">
+            {siteConfig.title}
+          </Heading>
+          <p className="hero__subtitle">{siteConfig.tagline}</p>
+          <div className={styles.buttons}>
+            <Link
+              className="button button--secondary button--lg"
+              to="/docs/intro">
+              Start Learning
+            </Link>
+          </div>
+        </div>
+        <div className={styles.hero3D}>
+          <RobotCharacter3D />
         </div>
       </div>
     </header>
