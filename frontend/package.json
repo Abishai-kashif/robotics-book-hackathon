@@ -1,0 +1,25 @@
+{
+  "name": "docusaurus-chatbot-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for chatbot integration with Docusaurus textbook site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@docusaurus/core": "^3.0.0",
+    "@docusaurus/module-type-aliases": "^3.0.0",
+    "@docusaurus/types": "^3.0.0",
+    "@docusaurus/preset-classic": "^3.0.0",
+    "@mdx-js/react": "^3.0.0",
+    "clsx": "^2.0.0",
+    "prism-react-renderer": "^2.1.0"
+  },
+  "keywords": ["docusaurus", "chatbot", "textbook", "rag"],
+  "author": "Physical AI & Humanoid Robotics Textbook",
+  "license": "MIT"
+}
