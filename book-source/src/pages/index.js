@@ -20,6 +20,11 @@ function HomepageHeader() {
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
+              className="button button--outline button--secondary button--lg"
+              to="/docs/ros2-fundamentals">
+              Explore Modules
+            </Link>
+            <Link
               className="button button--secondary button--lg"
               to="/docs/intro">
               Start Learning <span>→</span>
