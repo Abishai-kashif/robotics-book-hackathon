@@ -1,49 +1,41 @@
 """
-Qdrant service for vector database operations
+Qdrant service for vector database operations using Qdrant Cloud
 """
-from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from typing import List, Dict, Any
 import logging
-import os
-from pathlib import Path
-from dotenv import load_dotenv
 
-load_dotenv()
+from ..database.qdrant_client import get_qdrant_client, connect_with_retry
 
 logger = logging.getLogger(__name__)
 
-# Persistent local storage path for Qdrant
-QDRANT_LOCAL_PATH = Path(__file__).parent.parent.parent / "qdrant_local"
-
 class QdrantService:
-    def __init__(self):
-        self.host = os.getenv("QDRANT_HOST", "localhost")
-        self.port = int(os.getenv("QDRANT_PORT", 6333))
+    def __init__(self, use_retry: bool = True, max_retries: int = 3):
+        """
+        Initialize Qdrant service with cloud-only configuration.
+
+        Args:
+            use_retry: Whether to use retry logic for connection (default: True)
+            max_retries: Maximum number of connection retry attempts (default: 3)
+        """
         self.collection_name = "textbook_content"
+        self.use_retry = use_retry
+        self.max_retries = max_retries
         self._client = None  # Initialize client lazily
 
     @property
     def client(self):
         """Lazily initialize the Qdrant client to avoid multiprocessing issues"""
         if self._client is None:
-            # Try to connect to Qdrant server first, fallback to local mode if unavailable
-            try:
-                client = QdrantClient(host=self.host, port=self.port)
-                # Test connection
-                client.get_collections()
-                logger.info(f"Connected to Qdrant server at {self.host}:{self.port}")
-                self._client = client
-            except Exception as e:
-                logger.warning(f"Could not connect to Qdrant server at {self.host}:{self.port}, using local mode: {e}")
-                # Use persistent local storage path
-                qdrant_path = str(QDRANT_LOCAL_PATH)
-                os.makedirs(qdrant_path, exist_ok=True)
-                self._client = QdrantClient(path=qdrant_path)
-                logger.info(f"Using local Qdrant mode at {qdrant_path}")
+            # Use retry logic if enabled
+            if self.use_retry:
+                self._client = connect_with_retry(max_retries=self.max_retries)
+            else:
+                self._client = get_qdrant_client()
 
             # Initialize the collection after client is ready
             self._initialize_collection()
+
         return self._client
 
     def _initialize_collection(self):

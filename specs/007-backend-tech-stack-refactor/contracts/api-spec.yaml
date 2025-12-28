@@ -1,0 +1,409 @@
+openapi: 3.0.3
+info:
+  title: Textbook Chatbot API
+  description: |
+    Backend API for Physical AI & Humanoid Robotics textbook conversational assistant.
+    Provides RAG-based question answering using OpenAI Agents SDK and Qdrant Cloud.
+  version: 2.0.0
+  contact:
+    name: Robotics Book Team
+    email: support@robotics-book.example.com
+
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://api.robotics-book.example.com
+    description: Production server
+
+tags:
+  - name: chat
+    description: Conversational AI endpoints
+  - name: embeddings
+    description: Content indexing operations
+  - name: health
+    description: Service health and monitoring
+
+paths:
+  /api/v1/chat:
+    post:
+      tags:
+        - chat
+      summary: Process user query with RAG
+      description: |
+        Submit a user question to the textbook chatbot. The system:
+        1. Embeds the query using sentence-transformers
+        2. Searches Qdrant Cloud for relevant textbook content
+        3. Passes context to OpenAI Agents SDK agent
+        4. Returns generated answer with source citations
+      operationId: processQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserQuery'
+            examples:
+              simple_question:
+                summary: Simple question without context
+                value:
+                  content: "What is ROS 2 and why is it important for humanoid robotics?"
+              contextual_question:
+                summary: Question with page context
+                value:
+                  content: "How does this relate to the previous section on sensor fusion?"
+                  source_page: "/docs/module-3/sensor-fusion"
+                  session_id: "550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        '200':
+          description: Successful response with answer and sources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RAGResponse'
+              examples:
+                successful_response:
+                  summary: Successful answer with sources
+                  value:
+                    answer: "ROS 2 (Robot Operating System 2) is a flexible framework for writing robot software..."
+                    sources:
+                      - title: "Introduction to ROS 2"
+                        page: "/docs/module-1/ros2-basics"
+                        relevance_score: 0.89
+                      - title: "Humanoid Control Systems"
+                        page: "/docs/module-2/control"
+                        relevance_score: 0.76
+                    confidence_score: 0.89
+                    processing_time_ms: 1250.5
+        '400':
+          description: Invalid request (malformed query, validation failure)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Query content must be between 2 and 1000 characters"
+                code: "VALIDATION_ERROR"
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Rate limit exceeded. Please try again in 60 seconds"
+                code: "RATE_LIMIT_EXCEEDED"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '503':
+          description: Service unavailable (Qdrant Cloud or LLM API connection failure)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Vector database temporarily unavailable"
+                code: "SERVICE_UNAVAILABLE"
+
+  /api/v1/embeddings:
+    post:
+      tags:
+        - embeddings
+      summary: Store content embeddings
+      description: |
+        Index textbook content in Qdrant Cloud. Typically used by batch indexing scripts.
+        Generates 384-dimensional embeddings using sentence-transformers and stores in cloud.
+      operationId: storeEmbeddings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+                - title
+              properties:
+                content:
+                  type: string
+                  minLength: 100
+                  maxLength: 2000
+                  description: Text chunk to embed and store
+                  example: "ROS 2 provides a robust middleware layer for real-time communication..."
+                title:
+                  type: string
+                  minLength: 1
+                  maxLength: 200
+                  description: Document or section title
+                  example: "ROS 2 Architecture Overview"
+                metadata:
+                  type: object
+                  description: Optional additional metadata
+                  properties:
+                    source_file:
+                      type: string
+                      example: "docs/module-1/ros2-basics.md"
+                    chunk_index:
+                      type: integer
+                      example: 0
+                    total_chunks:
+                      type: integer
+                      example: 5
+      responses:
+        '201':
+          description: Embedding created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content_id:
+                    type: string
+                    format: uuid
+                    description: Unique identifier for stored embedding
+                    example: "a3c5e8f2-1234-5678-9abc-def012345678"
+                  status:
+                    type: string
+                    enum: [created]
+                    example: "created"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/v1/health:
+    get:
+      tags:
+        - health
+      summary: Health check endpoint
+      description: |
+        Verify service health including:
+        - Qdrant Cloud connectivity
+        - LLM API availability (if configured)
+        - Embedding model loaded
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded]
+                    example: "healthy"
+                  checks:
+                    type: object
+                    properties:
+                      qdrant:
+                        type: string
+                        enum: [ok, error]
+                        example: "ok"
+                      llm:
+                        type: string
+                        enum: [ok, error]
+                        example: "ok"
+                      embeddings:
+                        type: string
+                        enum: [ok, error]
+                        example: "ok"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2025-12-28T12:34:56Z"
+        '503':
+          description: Service unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [unhealthy]
+                    example: "unhealthy"
+                  checks:
+                    type: object
+                    properties:
+                      qdrant:
+                        type: string
+                        example: "error: connection refused"
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /api/v1/metrics:
+    get:
+      tags:
+        - health
+      summary: Performance metrics
+      description: |
+        Retrieve operational metrics:
+        - Query latency percentiles
+        - Error rates
+        - Cache hit rates (if applicable)
+      operationId: getMetrics
+      responses:
+        '200':
+          description: Metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query_latency_p50_ms:
+                    type: number
+                    format: float
+                    example: 450.2
+                  query_latency_p95_ms:
+                    type: number
+                    format: float
+                    example: 1850.5
+                  query_latency_p99_ms:
+                    type: number
+                    format: float
+                    example: 3200.1
+                  error_rate:
+                    type: number
+                    format: float
+                    description: Error rate (0.0-1.0)
+                    example: 0.02
+                  total_queries:
+                    type: integer
+                    example: 1523
+                  uptime_seconds:
+                    type: integer
+                    example: 86400
+
+components:
+  schemas:
+    UserQuery:
+      type: object
+      required:
+        - content
+      properties:
+        query_id:
+          type: string
+          format: uuid
+          description: Optional unique identifier (auto-generated if omitted)
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        timestamp:
+          type: string
+          format: date-time
+          description: Query creation time (auto-generated if omitted)
+          example: "2025-12-28T10:30:00Z"
+        content:
+          type: string
+          minLength: 2
+          maxLength: 1000
+          description: User's question
+          example: "What is the difference between velocity and acceleration in robot motion planning?"
+        source_page:
+          type: string
+          nullable: true
+          description: Current page context for contextual questions
+          example: "/docs/module-2/motion-planning"
+        session_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: Conversation session identifier for multi-turn interactions
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        user_context:
+          type: object
+          nullable: true
+          description: Optional additional metadata
+          additionalProperties: true
+
+    RAGResponse:
+      type: object
+      required:
+        - answer
+        - sources
+        - confidence_score
+        - processing_time_ms
+      properties:
+        answer:
+          type: string
+          description: Generated response from agent
+          example: "Robot motion planning involves calculating trajectories that avoid obstacles..."
+        sources:
+          type: array
+          description: Citations for answer with relevance scores
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                example: "Motion Planning Fundamentals"
+              page:
+                type: string
+                nullable: true
+                example: "/docs/module-2/motion-planning"
+              relevance_score:
+                type: number
+                format: float
+                minimum: 0.0
+                maximum: 1.0
+                description: Cosine similarity score
+                example: 0.85
+        confidence_score:
+          type: number
+          format: float
+          minimum: 0.0
+          maximum: 1.0
+          description: Aggregate confidence (max relevance score from top sources)
+          example: 0.85
+        processing_time_ms:
+          type: number
+          format: float
+          description: Total query processing latency in milliseconds
+          example: 1450.3
+
+    Error:
+      type: object
+      required:
+        - error
+        - code
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+          example: "Invalid request: query content too short"
+        code:
+          type: string
+          description: Machine-readable error code
+          example: "VALIDATION_ERROR"
+          enum:
+            - VALIDATION_ERROR
+            - RATE_LIMIT_EXCEEDED
+            - SERVICE_UNAVAILABLE
+            - INTERNAL_ERROR
+            - AUTHENTICATION_ERROR
+        details:
+          type: object
+          nullable: true
+          description: Additional error context
+          additionalProperties: true
+
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authenticated access (future enhancement)
+
+security: []  # No authentication required in current version

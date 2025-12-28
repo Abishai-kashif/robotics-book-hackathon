@@ -163,7 +163,8 @@ const ChatbotWidget = () => {
                   <div className="message-content">
                     <div className="message-text">{message.text}</div>
 
-                    {message.sources && message.sources.length > 0 && (
+                    {/* Will implement it with better UI/UX */}
+                    {/* {message.sources && message.sources.length > 0 && (
                       <div className="message-sources">
                         <strong>Sources:</strong>
                         <ul>
@@ -180,7 +181,7 @@ const ChatbotWidget = () => {
                           ))}
                         </ul>
                       </div>
-                    )}
+                    )} */}
 
                     {message.error && (
                       <div className="error-message">

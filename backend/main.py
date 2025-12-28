@@ -3,15 +3,30 @@ Main application entry point for the chatbot backend
 """
 import uvicorn
 import logging
+import sys
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.chatbot_router import router as chatbot_router
 from src.utils.metrics import time_it
+from src.config.env import get_environment_config
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Load and validate environment configuration at startup
+try:
+    config = get_environment_config()
+    logger.info("Environment configuration loaded successfully")
+    logger.info(f"LLM Provider: {config.get_llm_provider()}")
+    logger.info(f"Model: {config.model_name}")
+    logger.info(f"Qdrant Cloud: {config.qdrant_cluster_endpoint}")
+    logger.info(f"Embedding Model: {config.embedding_model}")
+except ValueError as e:
+    logger.error(f"Environment configuration validation failed: {e}")
+    logger.error("Please check your .env file or environment variables")
+    sys.exit(1)
 
 app = FastAPI(
     title="Docusaurus Chatbot API",
