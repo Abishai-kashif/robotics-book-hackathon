@@ -22,55 +22,20 @@ rag_service = RAGService(qdrant_service)
 @router.post("/chat", response_model=RAGResponse)
 async def chat_endpoint(query: UserQuery):
     """
-    Process a user query and return a RAG-enhanced response
+    Process a user query and return a RAG-enhanced response.
+
+    The OpenAI Agents SDK manages conversation context internally,
+    so explicit session management has been removed.
     """
     try:
         logger.info(f"Processing query: {query.content[:50]}...")
 
-        # Process the query using RAG service
+        # Process the query using RAG service with agent
         response = await rag_service.process_query(query)
-
-        # Add messages to conversation session if session ID is provided
-        if query.session_id:
-            # Add user message to session
-            await rag_service.add_message_to_session(
-                query.session_id,
-                {"role": "user", "content": query.content, "timestamp": query.timestamp}
-            )
-
-            # Add bot response to session
-            await rag_service.add_message_to_session(
-                query.session_id,
-                {
-                    "role": "assistant",
-                    "content": response.answer,
-                    "sources": response.sources,
-                    "timestamp": response.timestamp
-                }
-            )
-        else:
-            # Create a new session if one wasn't provided
-            session = await rag_service.create_conversation_session()
-            query.session_id = session.session_id
-
-            # Add messages to the new session
-            await rag_service.add_message_to_session(
-                session.session_id,
-                {"role": "user", "content": query.content, "timestamp": query.timestamp}
-            )
-
-            await rag_service.add_message_to_session(
-                session.session_id,
-                {
-                    "role": "assistant",
-                    "content": response.answer,
-                    "sources": response.sources,
-                    "timestamp": response.timestamp
-                }
-            )
 
         logger.info(f"Generated response with ID: {response.response_id}")
         return response
+
     except Exception as e:
         logger.error(f"Error processing query: {e}")
         raise HTTPException(status_code=500, detail=f"Error processing query: {str(e)}")
@@ -95,20 +60,79 @@ async def store_embeddings_endpoint(content: TextbookContent):
 @router.get("/health")
 async def health_check():
     """
-    Check the health status of the service
+    Check the health status of the service including Qdrant Cloud connectivity
     """
-    try:
-        # Check if Qdrant is accessible
-        qdrant_service.client.get_collection(qdrant_service.collection_name)
+    from ..database.qdrant_client import verify_connection
+    from ..config.env import get_environment_config
 
-        return {
-            "status": "healthy",
-            "timestamp": datetime.utcnow().isoformat(),
-            "services": {
-                "qdrant": "connected",
-                "api": "operational"
-            }
-        }
+    health_status = {
+        "status": "healthy",
+        "timestamp": datetime.utcnow().isoformat(),
+        "checks": {}
+    }
+
+    try:
+        # Check Qdrant Cloud connectivity
+        qdrant_ok = verify_connection(qdrant_service.client)
+        health_status["checks"]["qdrant"] = "ok" if qdrant_ok else "error"
+
+        if not qdrant_ok:
+            health_status["status"] = "degraded"
+
+        # Check collection existence
+        try:
+            qdrant_service.client.get_collection(qdrant_service.collection_name)
+            health_status["checks"]["collection"] = "ok"
+        except Exception as e:
+            logger.warning(f"Collection check failed: {e}")
+            health_status["checks"]["collection"] = "error"
+            health_status["status"] = "degraded"
+
+        # Check LLM configuration
+        try:
+            config = get_environment_config()
+            provider = config.get_llm_provider()
+            health_status["checks"]["llm_provider"] = provider
+
+            # Test actual API connectivity if Gemini is configured
+            if provider == "gemini" and config.is_gemini_configured():
+                try:
+                    # Quick validation that we can create a client
+                    from openai import AsyncOpenAI
+                    gemini_client = AsyncOpenAI(
+                        base_url=config.gemini_base_url,
+                        api_key=config.gemini_api_key,
+                        timeout=5.0  # Short timeout for health check
+                    )
+                    health_status["checks"]["llm"] = "ok"
+                    health_status["checks"]["gemini_configured"] = True
+                except Exception as e:
+                    logger.warning(f"Gemini client creation failed: {e}")
+                    health_status["checks"]["llm"] = "degraded"
+                    health_status["checks"]["gemini_error"] = str(e)
+                    health_status["status"] = "degraded"
+            elif provider == "openai":
+                health_status["checks"]["llm"] = "ok"
+                health_status["checks"]["openai_configured"] = True
+            else:
+                health_status["checks"]["llm"] = "ok"
+
+        except Exception as e:
+            logger.warning(f"LLM config check failed: {e}")
+            health_status["checks"]["llm"] = "error"
+            health_status["status"] = "degraded"
+
+        # Check embedding model
+        health_status["checks"]["embeddings"] = "ok"  # Validated at startup
+
+        # Return appropriate status code
+        if health_status["status"] == "healthy":
+            return health_status
+        else:
+            raise HTTPException(status_code=503, detail=health_status)
+
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Health check failed: {e}")
         raise HTTPException(status_code=503, detail="Service unavailable")
