@@ -4,6 +4,7 @@ qdrant-client==1.11.0
 openai==1.66.0
 openai-agents==0.0.2
 sentence-transformers==2.2.2
+huggingface-hub==0.23.0
 python-dotenv==1.0.0
 pydantic==2.10.6
 python-multipart==0.0.6
