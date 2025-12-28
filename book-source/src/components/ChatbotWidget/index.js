@@ -4,7 +4,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './styles.css';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+// Use environment variable for API base URL, with localhost fallback for development
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api/v1';
 
 const ChatbotWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
