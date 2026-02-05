@@ -5,7 +5,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import './styles.css';
 
 // Use environment variable for API base URL, with localhost fallback for development
-const REACT_APP_API_BASE_URL = 'https://robotics-book-hackathon.onrender.com/api/v1'
+// const REACT_APP_API_BASE_URL = 'https://robotics-book-hackathon.onrender.com/api/v1'
+const REACT_APP_API_BASE_URL = 'https://abishai-kashif-robotics-book-backend.hf.space/api/v1'
 const API_BASE_URL = REACT_APP_API_BASE_URL || 'http://localhost:8000/api/v1';
 
 const ChatbotWidget = () => {

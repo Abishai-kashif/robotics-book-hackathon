@@ -2,7 +2,7 @@
  * API client service for chatbot integration
  */
 class ApiClient {
-  constructor(baseURL = 'https://robotics-book-hackathon.onrender.com/api/v1' || 'http://localhost:8000/api/v1') {
+  constructor(baseURL = 'https://abishai-kashif-robotics-book-backend.hf.space/api/v1') {
     this.baseURL = baseURL;
   }
 
